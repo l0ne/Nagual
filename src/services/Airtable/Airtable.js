@@ -61,12 +61,13 @@ export const getQuoteById = id => {
   });
 };
 
-export const getQuotesList = filter => {
+export const getQuotesList = userId => {
   return new Promise((resolve, reject) => {
     database('Quotes')
       .select({
         // Selecting the first 3 records in Grid view:
         view: 'Grid view',
+        filterByFormula: `UserId = "${userId}"`,
       })
       .eachPage(
         function page(records, fetchNextPage) {

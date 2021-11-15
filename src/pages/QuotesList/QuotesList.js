@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Animated, Button, Easing, Text, View, FlatList, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import {
   Background,
@@ -9,7 +9,7 @@ import {
   PageContainer,
 } from '../../styled-componets/PageContainer';
 import {Logo} from '../../components/Logo';
-import {BackIcon, CreateIcon, SettingsIcon} from '../../components/Icon';
+import {BackIcon} from '../../components/Icon';
 import {getUserId} from '../../services/Storage/Storage';
 import MasonryList from '@react-native-seoul/masonry-list';
 import {getQuotesList} from '../../services/Airtable/Airtable';
@@ -40,10 +40,9 @@ const QuotesListScreen = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    getQuotesList().then(r => {
-      console.log(r);
+    getQuotesList(userId).then(r => {
       setListOfQuotes(r);
-    })
+    });
   }, [userId]);
 
   return (
@@ -60,26 +59,6 @@ const QuotesListScreen = ({navigation}) => {
               {/*<SettingsIcon />*/}
             </TouchableOpacity>
           </HeaderContainer>
-          {/*<ScrollView>*/}
-          {/*  <ListOfQuotesContainer>*/}
-          {/*    {listOfQuotes.map(quote => (*/}
-          {/*      <QuoteContainer>*/}
-          {/*        <Text>{quote}</Text>*/}
-          {/*      </QuoteContainer>*/}
-          {/*    ))}*/}
-          {/*  </ListOfQuotesContainer>*/}
-          {/*/!*</ScrollView>*!/*/}
-          {/*<FlatList*/}
-          {/*  columnWrapperStyle={{justifyContent: 'space-between'}}*/}
-          {/*  flexWrap="wrap"*/}
-          {/*  data={listOfQuotes}*/}
-          {/*  numColumns={2}*/}
-          {/*  renderItem={({item}) => {*/}
-          {/*    return (*/}
-          {/*      <Text style={{width: '48%'}} >{item.substring(0, 100)+ '...'}</Text>*/}
-          {/*    );*/}
-          {/*  }}*/}
-          {/*/>*/}
           <MasonryList
             style={{alignSelf: 'stretch'}}
             contentContainerStyle={{
@@ -90,7 +69,9 @@ const QuotesListScreen = ({navigation}) => {
             data={listOfQuotes}
             renderItem={({item}) => {
               return (
-                <QuoteContainer><QuoteText>{item.fields?.Quote}</QuoteText></QuoteContainer>
+                <QuoteContainer>
+                  <QuoteText>{item.fields?.Quote}</QuoteText>
+                </QuoteContainer>
               );
             }}
           />
